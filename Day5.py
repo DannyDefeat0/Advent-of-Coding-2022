@@ -14,6 +14,8 @@ for i in range(0,length):
         #line one is technically shorter than the other lines, we need to account for that
         #print(str(k)+" , "+str(column_pos))
         #print(lines[k][column_pos])
+        if len(lines[k]) < column_pos:
+            continue
         if k == height-1:
             stacks.append(char_on_line)
         if lines[k][column_pos].isalpha():
@@ -32,7 +34,7 @@ for i in range(len(instructions)):
     initial_column = int(instructions[i][1])-1
     final_column = int(instructions[i][2])-1
     for k in range(0,num_to_move):
-        stacks[final_column].insert(0,stacks[initial_column][0])
+        stacks[final_column].insert(k,stacks[initial_column][0])
         stacks[initial_column].remove(stacks[initial_column][0])
 #print(stacks)
 answer = []
