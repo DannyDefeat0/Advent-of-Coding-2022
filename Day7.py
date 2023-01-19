@@ -15,7 +15,6 @@ class Directory:
     def __repr__(self):
         return self.name
     def add_subdirectory(self, folder):
-        #assert isinstance(folder, Directory)
         self.subdirectories.append(folder)
         folder.parent = self
     def add_size(self,files):
@@ -28,16 +27,10 @@ class Directory:
             self.add_size(files)
             self.update_parents(files)
 
-
 subfolders = []
 file_sizes = 0
-answers = {}
 directory = Directory("/", subfolders, None, file_sizes)
 current_directory = directory
-
-
-
-
 
 for line in lines:
     if "$ cd /" in line:
@@ -47,10 +40,7 @@ for line in lines:
         # whatever it does we need to make sure it only moves down (or nowhere)
         for subdirectory in current_directory.subdirectories:
             z = (current_directory.name + "/" + line.split()[-1]).replace("//","/")
-            #print(z)
-            subdirectory.name
             if z == subdirectory.name:
-                #print(subdirectory.name)
                 current_directory = subdirectory
     elif "dir " in line:
         # dir means we need to append a subfolder to the current directory
@@ -64,8 +54,7 @@ for line in lines:
         # if the line has no cd, ls, or dir mentions, update the file sizes of all relevant directories
         current_directory.add_size(int(line.split()[0]))
         current_directory.update_parents(int(line.split()[0]))
-#print(Directory.instances)
-#This is just a gut check that the directories we're creating look accurate.
+
 total = 0
 target = 8381165000000000
 for thing in Directory.instances:
