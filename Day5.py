@@ -4,7 +4,7 @@ lines = file.readlines()
 #Define dimensions length and height, use this to create lists of letters at certain x,y positions
 length = 9
 height = 8
-
+#consider putting final variables in all caps
 
 stacks = []
 for i in range(0,length):
