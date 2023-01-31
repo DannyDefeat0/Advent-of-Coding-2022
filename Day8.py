@@ -3,21 +3,9 @@ lines = file.readlines()
 
 # visibility means anywhere outside the grid (up, down, left, right)
 # the first visible tree in a row or column determines the threshold for the next tree
-# For example, if the perimeter were all 10s, we would not need to check anything on the inside
+# For example, if the perimeter were all 9s, we would not need to check anything on the inside
 
-trees = {}
 visible_trees = 0
-
-
-class Tree:
-    instances = []
-
-    def __init__(self, row, column, height):
-        self.__class__.instances.append(self)
-        self.parent = parent
-        self.name = name
-        self.subdirectories = []
-        self.size = size
 
 
 def height_check(n, checks):
@@ -95,19 +83,4 @@ for i in range(len(lines)):
 
 print(visible_trees)
 print(max_viewing_distance)
-top_trees = {}
-bottom_trees = {}
-left_trees = {}
-right_trees = {}
-# top checks
 
-
-# maybe we already wrote this?
-# for left, if left_trees[current_i] >= left_trees[old_i]: visible trees += 1
-# problem: this current approach doesn't have an easy way to compare something like the 2nd row to the 2nd from last row
-
-# print(top_trees)
-# print(left_trees)
-# print(right_trees)
-# print(bottom_trees)
-# print(visible_trees)
