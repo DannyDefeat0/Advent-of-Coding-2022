@@ -1,5 +1,7 @@
 file = open("Day7rawData", "r")
 lines = file.readlines()
+from time import perf_counter
+import time
 
 class Directory:
     instances = []
@@ -56,12 +58,16 @@ for line in lines:
         current_directory.update_parents(int(line.split()[0]))
 
 total = 0
-target = 8381165000000000
+target = directory.size
+
+t1 = time.perf_counter_ns()
 for thing in Directory.instances:
     #print([total, thing.size])
     if thing.size < 100001:
         total += thing.size
     if thing.size - 8381165 >= 0 and thing.size < target:
         target = thing.size
+t2 = time.perf_counter_ns()
+print(t2 - t1)
 print(total)
 print(target)
