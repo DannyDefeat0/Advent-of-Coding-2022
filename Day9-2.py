@@ -28,76 +28,61 @@ def move(head_position, tail_position, direction, num_to_move):
         end = head_position[0] + num_to_move
         while head_position[0] != end:
             head_position[0] += 1
-            head_position = [head_position[0], head_position[1]]
             check = dist(head_position, tail_position)
             if check in checks:
                 continue
             else:
                 tail_position[0] += 1
-                tail_position = [tail_position[0], tail_position[1]]
                 check = dist(head_position, tail_position)
                 if head_position[1] - tail_position[1] > 0:
                     tail_position[1] += 1
                 elif head_position[1] - tail_position[1] < 0:
                     tail_position[1] -= 1
-                tail_position = [tail_position[0],tail_position[1]]
             tail_set.add(tuple(tail_position))
     elif direction == "L":
         end = head_position[0] - num_to_move
         while head_position[0] != end:
             head_position[0] -= 1
-            head_position = [head_position[0] , head_position[1]]
             check = dist(head_position, tail_position)
             if check in checks:
                 continue
             else:
                 tail_position[0] -= 1
-                tail_position = [tail_position[0], tail_position[1]]
                 check = dist(head_position, tail_position)
                 if head_position[1] - tail_position[1] > 0:
                     tail_position[1] += 1
                 if head_position[1] - tail_position[1] < 0:
                     tail_position[1] -= 1
-                tail_position = [tail_position[0],tail_position[1]]
             tail_set.add(tuple(tail_position))
     elif direction == "U":
         end = head_position[1] + num_to_move
         while head_position[1] != end:
             head_position[1] += 1
-            head_position = [head_position[0],head_position[1]]
             check = dist(head_position, tail_position)
             if check in checks:
                 continue
             else:
                 tail_position[1] += 1
-                tail_position = [tail_position[0], tail_position[1]]
                 check = dist(head_position, tail_position)
                 if head_position[0] - tail_position[0] > 0:
                     tail_position[0] += 1
                 elif head_position[0] - tail_position[0] < 0:
                     tail_position[0] -= 1
-                tail_position = [tail_position[0],tail_position[1]]
             tail_set.add(tuple(tail_position))
     elif direction == "D":
         end = head_position[1] - num_to_move
         while head_position[1] != end:
             head_position[1] -= 1
-            head_position = [head_position[0],head_position[1]]
             check = dist(head_position, tail_position)
             if check in checks:
-                print(check)
                 continue
             else:
                 tail_position[1] -= 1
-                tail_position = [tail_position[0], tail_position[1]]
                 check = dist(head_position, tail_position)
-                print(check)
-                print(head_position[0] - tail_position[0])
                 if head_position[0] - tail_position[0] > 0:
                     tail_position[0] += 1
                 elif head_position[0] - tail_position[0] < 0:
                     tail_position[0] -= 1
-                tail_position = [tail_position[0],tail_position[1]]
             tail_set.add(tuple(tail_position))
     return [head_position, tail_position]
 
@@ -107,6 +92,6 @@ for line in lines:
     num = int(input[-1])
     position = move(position[0], position[1], ref, num)
     print(position)
-    #FIRST MOVE NOT GETTING COUNTED
+    #FIRST MOVE IS GETTING COUNTED FUCK YOU GAME
 print(tail_set)
 print(len(tail_set))

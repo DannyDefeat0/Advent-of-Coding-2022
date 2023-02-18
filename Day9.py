@@ -2,11 +2,10 @@ file = open("Day9rawData", "r")
 lines = file.readlines()
 
 length = 258
-s = 153
+s = 0
 points_visited = [s]
-current_position = 153
-tail_position = 153
-
+current_position = 0
+tail_position = 0
 # [+len-1] [+len] [+len+1]
 # [-1]     [0]    [+1]
 # [-len-1] [-len] [-len+1]
@@ -34,6 +33,11 @@ def move_right(start, num_to_move):
                 tail_position += -length + 1
             elif up_or_down < 0:
                 tail_position += length + 1
+        if (tail_position - current_position) not in checks and (tail_position % length) == 0:
+            if up_or_down > 0:
+                tail_position += -length + 1
+            elif up_or_down < 0:
+                tail_position += length + 1
         if tail_position not in points_visited:
             points_visited.append(tail_position)
         elif (current_position - tail_position) not in checks:
@@ -51,6 +55,11 @@ def move_left(start, num_to_move):
         current_position = position
         up_or_down = tail_position - current_position
         if (tail_position - current_position) not in checks and str(tail_position / length)[0] != str(current_position / length)[0]:
+            if up_or_down > 0:
+                tail_position += -length - 1
+            elif up_or_down < 0:
+                tail_position += length - 1
+        if (tail_position - current_position) not in checks and (tail_position % length) == 0:
             if up_or_down > 0:
                 tail_position += -length - 1
             elif up_or_down < 0:
