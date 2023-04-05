@@ -1,5 +1,5 @@
 noop
-addx 33
+addx
 addx -30
 noop
 noop

@@ -3,6 +3,9 @@ lines = file.readlines()
 
 #addx V takes two cycles to complete. After two cycles, the X register is increased by the value V. (V can be negative.)
 #noop takes one cycle to complete. It has no other effect.
+#1. Add Good Error handling so we don't have repeated "Num = "" " steps
+#2. Remove as many hardcoded values as possible. For example, the 20,40,60 checks
+
 
 signal_strength = [0,1]
 signals = {}
@@ -19,6 +22,8 @@ def run_noop(cycle, x):
     if cycle % 20 == 0:
         signals[str(cycle)] = cycle * x
     return [cycle, x]
+
+
 def run_addx(cycle, x, num):
     final = cycle + 2
     while cycle < final:
@@ -33,24 +38,23 @@ def run_addx(cycle, x, num):
     if cycle % 40 in (x - 1, x, x + 1):
         output[cycle] = "#"
     return [cycle, x]
-def instructions(command, cycle, x, num):
+def instructions(command, cycle, x):
     if command == "noop":
         [cycle,x] = run_noop(cycle, x)
     else:
+        if int(input[-1]) is None:
+            raise Exception("Yo what the heck")
+        num = int(input[-1])
         [cycle, x] = run_addx(cycle, x, num)
     return [cycle, x]
 for line in lines:
     input = line.split()
     command = input[0]
-    if command == "noop":
-        num = ""
-    else:
-        num = int(input[-1])
-    signal_strength = instructions(command, signal_strength[0], signal_strength[1], num)
+    signal_strength = instructions(command, signal_strength[0], signal_strength[1])
     #print(command, num, signal_strength)
 
 asks = ['20', '60', '100', '140', '180', '220']
-checks = [1,41,81,121,161,201]
+checks = [1, 41, 81, 121, 161, 201]
 total = 0
 for i in asks:
     total += signals[i]
