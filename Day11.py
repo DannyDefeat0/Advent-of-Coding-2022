@@ -1,7 +1,6 @@
 file = open("Day11RawData", "r")
 lines = file.readlines()
-import gmpy2
-#try python lambda instead
+
 
 def monkeying_around(rounds):
     current_round = 0
