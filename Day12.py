@@ -1,16 +1,10 @@
 file = open("Day12RawData", "r")
 lines = file.readlines()
 
-#for Dijkstra's algorithm we will treat this as if it were an undirected graph with weights 1 for all nodes
-#every node has a row, height, and value which we define using ord
-#from there we'll define a starting node and ending node
-
 class Nodes:
     instances = {}
     def __init__(self, Node=0, row=0, column=0):
         key = (row, column)
-        #self.__class__.instances.append(self)
-
         self.Node = Node
         self.__class__.instances[key] = self.Node
         #Node will be the ord value of the letter
@@ -40,7 +34,7 @@ for key, value in Nodes.instances.items():
     if value == lowest:
         start = key
 print(start, final)
-#print(starters)
+
 visited = []
 queue = []
 def traverse(visited, coordinates, test):
@@ -48,7 +42,6 @@ def traverse(visited, coordinates, test):
     queue.append(test)
 
     while queue:
-        #print(queue)
         node = queue.pop(0)
         current = node
         if len(node) > 2:
