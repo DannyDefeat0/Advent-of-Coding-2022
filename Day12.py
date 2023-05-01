@@ -17,7 +17,6 @@ class Nodes:
         #row and column will indicate its position
         self.row = row
         self.column = column
-
 for i in range(len(lines)):
     for k in range(len(lines[i])):
         value = lines[i][k]
@@ -34,39 +33,55 @@ for i in range(len(lines)):
 peak = max(Nodes.instances.values())
 lowest = min(Nodes.instances.values())
 
+
 for key, value in Nodes.instances.items():
     if value == peak:
         final = key
     if value == lowest:
         start = key
 print(start, final)
-def traverse(start, final, coordinates):
-    distances = {coordinate: float('inf') for coordinate in coordinates}
-    distances[start] = 0
-    previous = {coordinate: None for coordinate in coordinates}
-    visited = set()
-    current_path = [start]
-    possible_solutions = []
-    shortest_path_length = 500
-    while final not in visited:
-        #print(len(current_path))
-        current_coordinate = min({coordinate: distance for coordinate, distance in distances.items() if coordinate not in visited}, key=distances.get)
-        if distances[current_coordinate] == float('inf'):
-            return None
-        visited.add(current_coordinate)
-        for neighbor in [(current_coordinate[0] + 1, current_coordinate[1]), (current_coordinate[0] - 1, current_coordinate[1]), (current_coordinate[0], current_coordinate[1] + 1), (current_coordinate[0], current_coordinate[1] - 1)]:
-            if neighbor in coordinates and neighbor not in visited and coordinates[neighbor] <= coordinates[current_coordinate] + 1:
-                new_distance = distances[current_coordinate] + 1
-                if new_distance < distances[neighbor]:
-                    distances[neighbor] = new_distance
-                    previous[neighbor] = current_coordinate
-    shortest_path = []
-    current_coordinate = final
-    while current_coordinate is not None:
-        shortest_path.append(current_coordinate)
-        current_coordinate = previous[current_coordinate]
-    return len(shortest_path)-1
-print(traverse(start, final, Nodes.instances))
+#print(starters)
+visited = []
+queue = []
+def traverse(visited, coordinates, test):
+    visited.append(test)
+    queue.append(test)
+
+    while queue:
+        #print(queue)
+        node = queue.pop(0)
+        current = node
+        if len(node) > 2:
+            current = node[-1]
+        current_height = coordinates[current]
+        for neighbor in [(current[0] + 1, current[1]), (current[0] - 1, current[1]), (current[0], current[1] + 1), (current[0], current[1] - 1)]:
+            if neighbor not in visited and neighbor in coordinates and coordinates[neighbor] <= current_height + 1:
+                current_path = list(node)
+                current_path.append(neighbor)
+                visited.append(neighbor)
+                queue.append(current_path)
+                if neighbor == final:
+                    return len(current_path)-2
+
+#print((traverse(visited, Nodes.instances, start)))
+small = 391
+
+starters = [key for key, value in Nodes.instances.items() if value < 2]
+#takes a few minutes but eventually we get 386
+for starter in starters:
+    #print(starter)
+    visited = []
+    queue = []
+    result = traverse(visited, Nodes.instances, starter)
+    if result is not None:
+        if result < small:
+            small = result
+            print(small)
+            print(result)
+            visited = []
+            queue = []
+print(small)
+
 
 
 
