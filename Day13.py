@@ -65,8 +65,7 @@ def stickler(source):
 
 
 # we need a function that takes a string and converts it into a list of lists.
-#print(stickler(lines))
-
+print(stickler(lines))
 
 def test():
     test_final_result = 13
@@ -75,7 +74,6 @@ def test():
     #this will throw an error and stop every line after if the check isn't true
     print("whatever")
     #print will only show if the assert passes
-
-test()
+#test()
     #we want this test to verify that it can compare certain types
     #we want the indexes of pairs that return true to sum correct
