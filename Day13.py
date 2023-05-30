@@ -2,10 +2,6 @@ file = open("Day13RawData", "r")
 lines = file.readlines()
 import copy
 
-a = [1]
-b = a[:]
-a.remove(a[0])
-print(a, b)
 #good project for unit testing
 #test driven development
 #write a test knowing it will fail, then writing it to make it pass
@@ -81,33 +77,33 @@ def indexer(source):
     #step 2 - sort the list by moving each item until everything behind it is less than it
     return indexes
 
+def two_check(source):
+    starting_index = 0
+    for i in range(len(source)):
+        if rules_check(source[i], [[2]]):
+            starting_index += 1
+    return starting_index
+
+
+def six_check(source):
+    starting_index = 0
+    for i in range(len(source)):
+        if rules_check(source[i], [[6]]):
+            starting_index += 1
+    return starting_index
 
 def swap(list, first, second):
     list[first], list[second] = list[second], list[first]
     return list
-def sorter(packets):
-    for i in range(len(packets)-1):
-        if i != len(packets)-1:
-            print(i)
-            #print(packets)
-            chuck = copy.deepcopy(packets)
-            if rules_check(chuck[i], chuck[i+1]):
-                #print(chuck)
-                #print(packets)
-                pass
-            else:
-                #print(indexes[i])
-                #print(indexes[i+1])
-                packets = swap(packets, i, i+1)
-                print(packets)
-                sorter(packets)
-    index_1 = packets.index([[2]]) + 1
-    index_2 = packets.index([[6]]) + 1
-    return index_1, index_2
+
 
 # we need a function that takes a string and converts it into a list of lists.
 #print(stickler(lines))
-print(sorter(indexer(lines)))
+#print(sorter(removal(indexer(lines))))
+print(two_check(indexer(lines)))
+print(six_check(indexer(lines)))
+print(six_check(indexer(lines))*two_check(indexer(lines)))
+
 
 def test():
     test_final_result = 13
