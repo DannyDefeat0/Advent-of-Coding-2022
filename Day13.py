@@ -1,7 +1,11 @@
 file = open("Day13RawData", "r")
 lines = file.readlines()
+import copy
 
-
+a = [1]
+b = a[:]
+a.remove(a[0])
+print(a, b)
 #good project for unit testing
 #test driven development
 #write a test knowing it will fail, then writing it to make it pass
@@ -16,7 +20,7 @@ def rules_check(first, second):
     while min(len(first),len(second)) > 0:
         firsty = first.pop(0)
         secondy = second.pop(0)
-        print(firsty, secondy)
+        #print(firsty, secondy)
         if isinstance(firsty, int) and isinstance(secondy, int):
             if secondy < firsty:
                 return False
@@ -63,9 +67,47 @@ def stickler(source):
                 indexes.append(current_index)
     return index_sum, indexes
 
+def indexer(source):
+    indexes = [[[2]], [[6]]]
+    #step - 1 - organize all packets into list
+    for i in range(len(source) - 1):
+        if source[i] == "\n" or source[i + 1] == "\n":
+            pass
+        else:
+            top_pair = eval(source[i].replace("\n", ""))
+            bottom_pair = eval(source[i + 1].replace("\n", ""))
+            indexes.append(top_pair)
+            indexes.append(bottom_pair)
+    #step 2 - sort the list by moving each item until everything behind it is less than it
+    return indexes
+
+
+def swap(list, first, second):
+    list[first], list[second] = list[second], list[first]
+    return list
+def sorter(packets):
+    for i in range(len(packets)-1):
+        if i != len(packets)-1:
+            print(i)
+            #print(packets)
+            chuck = copy.deepcopy(packets)
+            if rules_check(chuck[i], chuck[i+1]):
+                #print(chuck)
+                #print(packets)
+                pass
+            else:
+                #print(indexes[i])
+                #print(indexes[i+1])
+                packets = swap(packets, i, i+1)
+                print(packets)
+                sorter(packets)
+    index_1 = packets.index([[2]]) + 1
+    index_2 = packets.index([[6]]) + 1
+    return index_1, index_2
 
 # we need a function that takes a string and converts it into a list of lists.
-print(stickler(lines))
+#print(stickler(lines))
+print(sorter(indexer(lines)))
 
 def test():
     test_final_result = 13
