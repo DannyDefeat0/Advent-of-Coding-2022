@@ -77,6 +77,7 @@ def indexer(source):
     #step 2 - sort the list by moving each item until everything behind it is less than it
     return indexes
 
+
 def two_check(source):
     starting_index = 0
     for i in range(len(source)):
