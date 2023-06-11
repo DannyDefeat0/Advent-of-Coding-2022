@@ -8,11 +8,8 @@
 .....oooo.oooo#ooooo.....
 ....oooooooooo#oooooo....
 ...ooo#########ooooooo...
-..ooooo........oooooooo..
-.........................
+..ooooo.......ooooooooo..
 #########################
 
-500 + 0i
-499 + i
-500 + i
-501 + i
+#theory
+Every piece of sand will spawn 3 more pieces of sand below except where there are rocks.

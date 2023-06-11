@@ -79,25 +79,27 @@ def sandfall(rocks, drop_point):
         if rocks[i][1] > max_row:
             max_row = rocks[i][1]
     max_row = max_row + 2
-    cone_of_shame = [[i, max_row] for i in range(0,1000000000)]
+    cone_of_shame = [[i, max_row] for i in range(0,1000000)]
     rocks.extend(cone_of_shame)
+    rocks = set(map(tuple, rocks))
+    print(rocks)
     assert isinstance(drop_point, object)
     sand_point = drop_point
     while safe:
         #sand always checks down first
-        if sand_point in rocks:
+        if (sand_point[0], sand_point[1]) in rocks or sand_point[1] == max_row:
             safe = False
-        elif [sand_point[0],sand_point[1]+1] in rocks:
+        elif (sand_point[0],sand_point[1]+1) in rocks:
             #check one down and to the left
-            if [sand_point[0]-1,sand_point[1]+1] not in rocks:
+            if (sand_point[0]-1,sand_point[1]+1) not in rocks:
                 sand_point = [sand_point[0]-1,sand_point[1]+1]
             #check one down and to the right
-            elif [sand_point[0]+1,sand_point[1]+1] not in rocks:
+            elif (sand_point[0]+1,sand_point[1]+1) not in rocks:
                 sand_point = [sand_point[0] + 1, sand_point[1] + 1]
             else:
             #rest if blocked
                 sand_count += 1
-                rocks.append(sand_point)
+                rocks.add((sand_point[0],sand_point[1]))
                 sand_point = drop_point
             #sand is just a rock you haven't met yet
         elif sand_point[1]+1 > max_row:
@@ -128,14 +130,38 @@ def sandfall_p2(rocks, drop_point):
                 #print("damn it Jim")
                 pass
             # if there isn't a rock check if it has a roof
-            elif all(roof in rocks for roof in roofs) or all(roof in has_roof for roof in roofs):
-                has_roof.append(point)
+            elif all(roof in rocks for roof in roofs):
+                rocks.append(point)
                 pass
-            # notably, if a point has a roof, it follows that any point below
+            # notably, if a point has a roof, it follows that any point below it also has that roof
             # finally, if there are no obstructions increase the sandcount
             else:
                 sand_count += 1
     return sand_count
+
+def sandfall_p3(rocks, drop_point):
+    sands = set()
+    sands.add(tuple(drop_point))
+    max_row = 0
+    for i in range(len(rocks)):
+        if rocks[i][1] > max_row:
+            max_row = rocks[i][1]
+    max_row = max_row + 2
+    cone_of_shame = [[i, max_row] for i in range(0,1000000)]
+    rocks.extend(cone_of_shame)
+    rocks = set(map(tuple, rocks))
+    assert isinstance(drop_point, object)
+    for i in range(max_row):
+        points_to_check = [[x,i] for x in range(drop_point[0]-i, drop_point[0]+i+1)]
+        for point in points_to_check:
+            if tuple(point) in sands:
+                children = [[point[0]-1,point[1]+1],[point[0]+1,point[1]+1],[point[0],point[1]+1]]
+                for child in children:
+                    if tuple(child) not in rocks:
+                        print(child)
+                        sands.add(tuple(child))
+    return(len((sands)))
+
 
 
 
@@ -146,7 +172,7 @@ def test_sandfall():
     #early test to see if we can stack or if sand would fall into the depths
     assert sandfall((path_converter(lines)), [500, 0]) == 24
 
-print(sandfall_p2(path_converter(lines),[500,0]))
+print(sandfall_p3(path_converter(lines),[500,0]))
 #print(sandfall(path_converter(lines),[500,0]))
 #test_path_converter()
 #path_converter(lines)
