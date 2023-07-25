@@ -47,7 +47,7 @@ def pipe_distance(pipe1_name, pipe2_name, layout):
         explored_pipes = set()
         for connected_pipe_name in pipe1.connected_pipes:
             #print(pipe1.connected_pipes)
-            print(connected_pipe_name)
+            #print(connected_pipe_name)
             if connected_pipe_name not in explored_pipes:
                 distance += 1
                 for pipe in layout:
@@ -68,28 +68,38 @@ def pipe_distance(pipe1_name, pipe2_name, layout):
 def pipe_opener(layout, current_pipe, max_time):
     current_time = 0
     total_flow = 0
+    flow_index = 0
+    open_valves = set()
     while current_time < max_time:
         time_fence = max_time - current_time
         #time fences are cool
-        best_flow = 0
         flow_index = 0
+        best_flow = 0
+        next_pipe_dist = 0
+        print(current_time)
         for i in range(len(layout)):
             #go by index so we can decide which pipe to adjust by later
-            if layout[i] == current_pipe:
+            if layout[i] == current_pipe or layout[i].name in open_valves:
                 pass
             #check only reachable pipes with positive flow. If it would take too long to get to a pipe we can ignore it.
-            elif layout[i].flow_rate != 0 and pipe_distance(current_pipe, layout[i],layout) <= time_fence:
-                distance = pipe_distance(current_pipe, layout[i],layout)
-                flow_rate = (layout[i].flow_rate * (max_time - current_time - distance))/distance
-                if flow_rate > best_flow:
-                    best_flow = flow_rate
+            elif layout[i].flow_rate != 0 and pipe_distance(current_pipe.name, layout[i].name,layout) <= time_fence:
+                distance = pipe_distance(current_pipe.name, layout[i].name,layout)
+                flow = (layout[i].flow_rate * (max_time - (current_time + distance+1))) / distance
+                #dropped divide by distance
+                if flow > best_flow:
+                    best_flow = flow * distance
+                    next_pipe_dist = distance
                     flow_index = i
-                if i == len(layout):
-                    total_flow += best_flow
-                    layout[flow_index].flow_rate = 0
-                    pipe1 = layout[flow_index]
-            elif best_flow == 0:
-                break
+                if i == len(layout) - 1 and best_flow == 0:
+                    current_time = max_time
+            if i == len(layout)-1:
+                total_flow += best_flow
+                open_valves.add(layout[flow_index].name)
+                print(layout[flow_index].name, current_time)
+                print(open_valves,total_flow)
+                current_time = current_time + next_pipe_dist+1
+                #add one for opening valve time
+                current_pipe = layout[flow_index]
                 #should only happen if we run out of eligible targets before the time runs out
     return total_flow
 
@@ -113,4 +123,5 @@ def test_pipe_distance():
 #print(pipe_layout(lines))
 #print(pipe_distance("AA","CC",pipe_layout(lines)))
 print(pipe_opener(pipe_layout(lines),pipe_layout(lines)[0],30))
+#pipe distance currently goes by the name of pipes not the literal pipes!!
 
